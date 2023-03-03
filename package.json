@@ -2,9 +2,9 @@
   "name": "sos2223-11-sandbox",
   "version": "0.0.0",
   "description": "hello",
-  "main": "index_i.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node index_i",
+    "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
