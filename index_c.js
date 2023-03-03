@@ -108,7 +108,7 @@ var i = a
     });
 
 
-// ----------------------------Segundo Laboratorio---------------------------
+// ----------------------------Segundo y Tercer Laboratorio---------------------------
 
 // Cargar módulo para servidor Web.
 
@@ -126,14 +126,61 @@ console.log(cool());
 
 var app = express();
 
+// Parsear cuerpo del mensaje
+
+var bodyparser = require("body-parser");
+
 // Definir variable de entorno para el puerto
 
 var port = process.env.PORT || 12345;
+
+app.use(bodyparser.json());
+
+// Creamos unas variables
+
+var contacts = [
+    {
+        name: "pepe",
+        phone: 12345
+    },
+
+    {
+        name: "pablo",
+        phone: 6789
+    }
+];
 
 app.get("/faces", (request, response) => {
     response.send(cool());
     console.log("New Request");
 });
+
+// Creamos un nuevo GET y un nuevo POST
+
+const BASE_API_URL = "/api/v1";
+
+app.get(BASE_API_URL + "/contacts", (request, response) => {
+    response.json(contacts);
+    console.log("New GET to /contacts");
+
+});
+
+app.post(BASE_API_URL + "/contacts", (request, response) => {
+    var newContact = request.body;
+
+    console.log(`newContact = <${newContact}>`);
+   
+    console.log("New POST to /contacts");
+
+    // Enviar código de estado
+
+    response.sendStatus(201);
+
+    // Poner push de contactos
+
+    contacts.push(newContact);
+});
+
 
 // Arrancar servidor web (escuchar en un puerto) e ir al navegador y poner localhost:12345/faces
 
