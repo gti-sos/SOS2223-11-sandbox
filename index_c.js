@@ -1,3 +1,5 @@
+// ----------------------------Primer Laboratorio---------------------------
+
 // Imprimir por pantalla
 
 console.log("Hola Mundo");
@@ -95,7 +97,7 @@ numbers.forEach((msg) => { // La flecha representa function.
 
 // Otro iterador
 
-var i = numbers
+var i = a
 
     .filter((n) => { // Imprime los elementos de la condición
         return n > 2;
@@ -104,3 +106,42 @@ var i = numbers
     }).reduce((a, n) => {
         return n + a; // Reduce a 1 elemento la suma de los dos.
     });
+
+
+// ----------------------------Segundo Laboratorio---------------------------
+
+// Cargar módulo para servidor Web.
+
+var express = require("express");
+
+// Cargar módulo de paquete instalado: Objetos.
+
+var cool = require("cool-ascii-faces");
+
+// Muestra emoticonos aleatorios
+
+console.log(cool());
+
+// Servidor Web: Función que se ejecuta cada vez que llamamos a "/faces"
+
+var app = express();
+
+// Definir variable de entorno para el puerto
+
+var port = process.env.PORT || 12345;
+
+app.get("/faces", (request, response) => {
+    response.send(cool());
+    console.log("New Request");
+});
+
+// Arrancar servidor web (escuchar en un puerto) e ir al navegador y poner localhost:12345/faces
+
+app.listen(port, () => {
+    console.log(`Server ready in port ${port}`);
+});
+
+
+
+
+
