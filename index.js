@@ -137,8 +137,6 @@ function getTownshipCodeAverage(dataArray) {
 
 // funcion media lineas telefonicas 
 
-
-
 function averageWideLandline(province){
     
    s =  phoneArray.filter(n => n.province === province);
@@ -159,7 +157,7 @@ var express = require("express");
 
 var app = express();
 var port = process.env.PORT || 12345;
-
+////////
 // function ready for main repo
 app.get("/cool", (req, res) => {
     res.send(cool());
@@ -173,10 +171,9 @@ app.get("/samples/IGR", (req, res) => {
 });
 
 app.get("/samples/VRJ",(req,res)=>{
-    res.send(averageWideLandline("Almeria"));
-})
+    res.send(String(averageWideLandline("Almeria")));
+});
 
 app.listen(port, () => {
     console.log(`Server ready in port ${port}`);
 });
-
