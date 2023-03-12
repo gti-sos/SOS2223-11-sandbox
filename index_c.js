@@ -134,11 +134,14 @@ var bodyparser = require("body-parser");
 
 var port = process.env.PORT || 12345;
 
+// Usar bodyparser para la app express
+
 app.use(bodyparser.json());
 
-// Creamos unas variables
+// Creamos unas variables de recurso
 
 var contacts = [
+
     {
         name: "pepe",
         phone: 12345
@@ -160,15 +163,20 @@ app.get("/faces", (request, response) => {
 const BASE_API_URL = "/api/v1";
 
 app.get(BASE_API_URL + "/contacts", (request, response) => {
+
     response.json(contacts);
+
     console.log("New GET to /contacts");
 
 });
 
 app.post(BASE_API_URL + "/contacts", (request, response) => {
+
     var newContact = request.body;
 
-    console.log(`newContact = <${newContact}>`);
+    // Sustituir object por la variable que le pasas, null para filtrar algo, y 2 para tabular
+
+    console.log(`newContact = ${JSON.stringify(newContact, null, 2)}>`);
    
     console.log("New POST to /contacts");
 
@@ -176,7 +184,7 @@ app.post(BASE_API_URL + "/contacts", (request, response) => {
 
     response.sendStatus(201);
 
-    // Poner push de contactos
+    // Meter datos dentro de un array 
 
     contacts.push(newContact);
 });
