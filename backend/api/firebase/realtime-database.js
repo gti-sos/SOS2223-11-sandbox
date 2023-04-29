@@ -8,8 +8,8 @@ app.use(cors());
 app.use(express.json());
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://sos2223-11-bbc8a-default-rtdb.europe-west1.firebasedatabase.app'
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://sos2223-11-bbc8a-default-rtdb.europe-west1.firebasedatabase.app'
 });
 var port = process.env.PORT || 12345;
 const db = admin.database();
@@ -95,12 +95,12 @@ var phoneArray = [{
 app.get(apiUrl + "/loadInitialData", (req, res) => {
     console.log("Carga de datos");
     const phoneRef = db.ref("phone-line-stats");
-    phoneRef.once("value", (snapshot)=>{
-        if (snapshot.val()){
+    phoneRef.once("value", (snapshot) => {
+        if (snapshot.val()) {
             console.log("ya hay datos en la base de datos");
-        }else{
+        } else {
             console.log("Va a cargar los datos");
-            phoneArray.forEach((phone) =>{
+            phoneArray.forEach((phone) => {
                 //var phoneRef = db.ref(`phone-line-stats/${phone.province}/${phone.year}`)
                 var phoneRef = db.ref(`phone-line-stats`)
                 phoneRef.push(phone);
@@ -113,7 +113,7 @@ app.get(apiUrl + "/loadInitialData", (req, res) => {
 });
 
 
-app.post(apiUrl,  (req, res) => {
+app.post(apiUrl, (req, res) => {
 
     console.log(req.body);
     const newprovince = req.body.province;
@@ -125,20 +125,20 @@ app.post(apiUrl,  (req, res) => {
     const newPhoneLine = req.body;
     console.log("New POST request to /phone-line-stats");
     const phoneRef = db.ref(`phone-line-stats`);
-    if(validRequest){
-    phoneRef.once("value", (snapshot) =>{
-        const data = snapshot.val();
-        const valores = Object.values(data).filter((phone)=> phone.year === newyear && phone.province === newprovince);
-        if (valores.length!=0){
-            res.sendStatus(409);
-            console.log("Recurso ya existente");
-        }else{
-            phoneRef.push(req.body);
-            res.sendStatus(201);
-        }
+    if (validRequest) {
+        phoneRef.once("value", (snapshot) => {
+            const data = snapshot.val();
+            const valores = Object.values(data).filter((phone) => phone.year === newyear && phone.province === newprovince);
+            if (valores.length != 0) {
+                res.sendStatus(409);
+                console.log("Recurso ya existente");
+            } else {
+                phoneRef.push(req.body);
+                res.sendStatus(201);
+            }
 
-    });
-    }else{
+        });
+    } else {
         console.log("Error 400 los campos no son los esperados o no hay 5 campos con sus respectivos nombre");
         res.sendStatus(400);
     }
@@ -180,13 +180,13 @@ app.get(apiUrl ,  (req, res) => {
     });  
 });
 */
-app.get(apiUrl+'/:province/:year', (req, res) => {
+app.get(apiUrl + '/:province/:year', (req, res) => {
 
-  const  phoneRef = db.ref("phone-line-stats");
-  const filtro = phoneRef.orderByChild(`province`).equalTo(req.params.province);
-    filtro.once("value", (snapshot)=>{
+    const phoneRef = db.ref("phone-line-stats");
+    const filtro = phoneRef.orderByChild(`province`).equalTo(req.params.province);
+    filtro.once("value", (snapshot) => {
         const data = snapshot.val();
-        const result = Object.values(data).filter((phone)=> phone.year === parseInt(req.params.year))[0];
+        const result = Object.values(data).filter((phone) => phone.year === parseInt(req.params.year))[0];
         res.json(result);
     });
 });
@@ -195,49 +195,49 @@ app.get(apiUrl, (req, res) => {
     console.log("Get a todo");
     //const queryParams = req.query;
     const phoneRef = db.ref('phone-line-stats');
-    phoneRef.once("value", (snapshot) =>{
+    phoneRef.once("value", (snapshot) => {
         const datos = snapshot.val();
         let valores = Object.values(datos);
-        console.log("Provincia = "+ req.query.province);
-        console.log("wide_landline query = "+ req.query.wide_landline_over);
-        if (req.query.province) valores = valores.filter((phone)=> phone.province === req.query.province);
-        if (req.query.year) valores = valores.filter((phone)=> phone.year === parseInt(req.query.year));
-        if (req.query.landline_over) valores = valores.filter((phone)=> phone.landline >= parseInt(req.query.landline_over));
-        if (req.query.post_payment_phone_line_over) valores = valores.filter((phone)=> phone.post_payment_phone_line >= parseInt(req.query.post_payment_phone_line_over));
-        if (req.query.wide_landline_over) valores = valores.filter((phone)=> phone.wide_landline >= parseInt(req.query.wide_landline_over));  
+        console.log("Provincia = " + req.query.province);
+        console.log("wide_landline query = " + req.query.wide_landline_over);
+        if (req.query.province) valores = valores.filter((phone) => phone.province === req.query.province);
+        if (req.query.year) valores = valores.filter((phone) => phone.year === parseInt(req.query.year));
+        if (req.query.landline_over) valores = valores.filter((phone) => phone.landline >= parseInt(req.query.landline_over));
+        if (req.query.post_payment_phone_line_over) valores = valores.filter((phone) => phone.post_payment_phone_line >= parseInt(req.query.post_payment_phone_line_over));
+        if (req.query.wide_landline_over) valores = valores.filter((phone) => phone.wide_landline >= parseInt(req.query.wide_landline_over));
         res.json(valores);
     });
-  });
-  
-  
-  
+});
 
-app.delete(apiUrl + "/:province/:year",  (req, res) => {
+
+
+
+app.delete(apiUrl + "/:province/:year", (req, res) => {
     console.log("Borrar un recurso");
     var province = req.params.province;
     var year = parseInt(req.params.year);
-        const phoneRef = db.ref(`phone-line-stats`);
-        phoneRef.once("value",(snapshot)=>{
-            const datos = snapshot.val();
-            
-            const obetenerId = Object.keys(datos).find(
-                (key) => datos[key].province === province && datos[key].year === year);
-        if (obetenerId){
+    const phoneRef = db.ref(`phone-line-stats`);
+    phoneRef.once("value", (snapshot) => {
+        const datos = snapshot.val();
+
+        const obetenerId = Object.keys(datos).find(
+            (key) => datos[key].province === province && datos[key].year === year);
+        if (obetenerId) {
             phoneRef.child(obetenerId).remove();
             res.sendStatus(200);
-        }else{
+        } else {
             console.log("No existe el recurso");
             res.sendStatus(404);
         }
-        });
-       
-      
+    });
+
+
 });
 
-app.delete(apiUrl ,  (req, res) => {
+app.delete(apiUrl, (req, res) => {
     console.log("Borrar todo");
-        const phoneRef = db.ref(`phone-line-stats`);
-        phoneRef.remove();      
+    const phoneRef = db.ref(`phone-line-stats`);
+    phoneRef.remove();
     res.sendStatus(200);
 });
 
@@ -252,24 +252,24 @@ app.put(apiUrl + "/:province/:year", (req, res) => {
     console.log(`New PUT request to /phone-line-stats/${paramProvince}/${paramYear}`);
     if (validRequest && (paramProvince === req.body.province && parseInt(req.body.year) === paramYear)) {
         const phoneRef = db.ref(`phone-line-stats`);
-        phoneRef.once("value",(snapshot)=>{
+        phoneRef.once("value", (snapshot) => {
             const datos = snapshot.val();
             const obetenerId = Object.keys(datos).find(
                 (key) => datos[key].province === paramProvince && datos[key].year === paramYear);
-        if (obetenerId){
-            phoneRef.child(obetenerId).update({
+            if (obetenerId) {
+                phoneRef.child(obetenerId).update({
 
-                year: paramYear,
-                province: paramProvince,
-                landline: newlandline,
-                 post_payment_phone_line: newpost_payment_phone_line,
-                wide_landline: newwide_landline
-            });
-            res.sendStatus(200);
-        }else{
-            console.log("No existe el recurso");
-            res.sendStatus(404);
-        }
+                    year: paramYear,
+                    province: paramProvince,
+                    landline: newlandline,
+                    post_payment_phone_line: newpost_payment_phone_line,
+                    wide_landline: newwide_landline
+                });
+                res.sendStatus(200);
+            } else {
+                console.log("No existe el recurso");
+                res.sendStatus(404);
+            }
         });
     } else {
         console.log("Cuerpo de la peticion no es valido o los parametros de la URL no coinciden con la peticion")
@@ -278,4 +278,4 @@ app.put(apiUrl + "/:province/:year", (req, res) => {
 
 });
 
-app.put()
+// app.put()
