@@ -34,6 +34,9 @@ import {backend_vrj} from "./backend/api/v2/index_vrj.js";
 
 import { handler } from "./frontend/build/handler.js";
 
+//--- firebase ---
+import {backend_firebase} from "./backend/api/firebase/realtime-database-m.js";
+
 // --- Versión 1 ---
 
 backend_igrv1(app);
@@ -49,6 +52,9 @@ backend_igr(app);
 backend_cac(app);
 
 backend_vrj(app);
+
+// --- Versión 2 ---
+backend_firebase(app);
 
 app.use(handler);
 
