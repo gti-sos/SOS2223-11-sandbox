@@ -46,5 +46,8 @@
   },
   "jestCoverageBadges": {
     "reportFile": "coverage-final.json"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.33.0"
   }
 }

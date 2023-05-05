@@ -1,4 +1,4 @@
-const sum = require('../codeCover.js');
+const sum = import('../codeCover.js');
 
 describe('sum', () => {
   it('should add two numbers', () => {
