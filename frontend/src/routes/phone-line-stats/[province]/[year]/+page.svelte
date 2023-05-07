@@ -76,12 +76,6 @@
 </script>
 
 <h1>Lineas de teléfono</h1>
-<!-- {#if mensaje != ""}
-       <Alert {color} 
-       isOpen={visible}
-       toggle={() => (visible = false)}
-       >{mensaje}</Alert>
-{/if} -->
 {#if mensaje != ""}
     <Alert {color} isOpen={visible} toggle={() => (visible = false)}
         >{mensaje}</Alert
